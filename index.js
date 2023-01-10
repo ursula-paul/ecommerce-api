@@ -14,8 +14,9 @@ mongoose
         console.log(err)
     })
 
-PORT = process.env.PORT
+app.use(express.json());
 
+PORT = process.env.PORT
 app.listen(process.env.PORT || PORT, () => {
     console.log(`server is running on PORT ${PORT}`)
 })
@@ -43,7 +44,7 @@ app.listen(process.env.PORT || PORT, () => {
 //   });
 
 // app.use(cors());
-// app.use(express.json());
+
 // app.use("/api/auth", authRoute);
 // app.use("/api/users", userRoute);
 // app.use("/api/products", productRoute);

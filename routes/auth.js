@@ -30,7 +30,7 @@ router.post('/login', async (req, res) => {
     try{
         const user = await User.findOne(
             {
-                userName: req.body.user_name
+                username: req.body.username
             }
         );
 
@@ -58,11 +58,13 @@ router.post('/login', async (req, res) => {
             {expiresIn:"3d"}
         );
   
-        const { password, ...others } = user._doc;  
-        res.status(200).json({...others, accessToken});
+        const { password, ...others } = user._doc;
+        //console.log("others","dchshxcghg")
+        return res.status(200).json({ ...others, accessToken });
+        
 
     }catch(err){
-        res.status(500).json(err);
+        return res.status(500).json(err);
     }
 
 });

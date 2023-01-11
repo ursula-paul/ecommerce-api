@@ -71,12 +71,22 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
 
 router.get("/income", verifyTokenAndAdmin, async (req, res) => {
   const date = new Date();
+  let startDate = req.query.startDate
+  if (!startDate) {
+    return res.status(400).json({
+      "message": "start date required",
+      
+   })
+  }
+  startDate = new Date(startDate)
+  console.log(startDate)
   const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
   const previousMonth = new Date(new Date().setMonth(lastMonth.getMonth() - 1));
+  console.log(previousMonth)
 
   try {
     const income = await Order.aggregate([
-      { $match: { createdAt: { $gte: previousMonth } } },
+      { $match: { createdAt: { $gte: startDate } } },
       {
         $project: {
           month: { $month: "$createdAt" },
@@ -90,6 +100,7 @@ router.get("/income", verifyTokenAndAdmin, async (req, res) => {
         },
       },
     ]);
+    //const income = await Order.find()
     res.status(200).json(income);
   } catch (err) {
     res.status(500).json(err);

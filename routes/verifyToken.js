@@ -4,6 +4,7 @@ const verifyToken = (req, res, next) => {
 const authHeader = req.headers.token;
 if (authHeader) {
     const token = authHeader.split(" ")[1];
+    //console.log(token)
     jwt.verify(token, process.env.JWT_SEC, (err, user) => {
     if (err) res.status(403).json("Token is not valid!");
     req.user = user;
@@ -19,7 +20,7 @@ verifyToken(req, res, () => {
     if (req.user.id === req.params.id || req.user.isAdmin) {
     next();
     } else {
-    res.status(403).json("You are not authorised");
+    res.status(403).json("You are not alowed to do that!");
     }
 });
 };
@@ -29,7 +30,7 @@ verifyToken(req, res, () => {
     if (req.user.isAdmin) {
     next();
     } else {
-    res.status(403).json("You are not alowed to do that!");
+    res.status(403).json("You are not an admin");
     }
 });
 };
